@@ -18,7 +18,7 @@ export function getLocation(map, infoWindow) {
         infoWindow.setPosition(pos);
         infoWindow.setContent("Location found.");
         infoWindow.open(map);
-        map.setCenter(pos);
+        map.panTo(pos);
       },
       function() {
         handleLocationError(true, infoWindow, map.getCenter());

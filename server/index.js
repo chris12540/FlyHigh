@@ -25,6 +25,7 @@ massive(process.env.CONNECTION_STRING)
   });
 
 app.get("/api/spots", spotsController.read);
+app.get("/api/spot/:id", spotsController.getSpot);
 
 const PORT = process.env.SERVER_PORT || 25565;
 app.listen(PORT, () => {
