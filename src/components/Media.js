@@ -1,8 +1,9 @@
 import React from "react";
+import "./scss/Media.scss";
 
 const Media = props => {
   let media = [];
-  if (props.videos.length) {
+  if (props.videos && props.videos.length) {
     media = props.videos.map(video => {
       return (
         <div className="video" key={video.id}>
@@ -11,6 +12,7 @@ const Media = props => {
           <h6>{video.created_at}</h6>
           <div className="video-iframe">
             <iframe
+              title={video.id}
               width="560"
               height="315"
               src={`https://www.youtube.com/embed/${video.url}`}
@@ -22,7 +24,7 @@ const Media = props => {
         </div>
       );
     });
-  } else if (props.photos.length) {
+  } else if (props.photos && props.photos.length) {
     media = props.photo.map(photo => {
       return (
         <div className="photo">
@@ -33,6 +35,12 @@ const Media = props => {
         </div>
       );
     });
+  } else {
+    media = (
+      <div>
+        <h1>No Media 😭</h1>
+      </div>
+    );
   }
   return <div className="media">{media}</div>;
 };

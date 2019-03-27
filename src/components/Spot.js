@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, Route } from "react-router-dom";
+import { NavLink, Link, Route, Redirect } from "react-router-dom";
 import axios from "axios";
 import Media from "./Media";
 import Comments from "./Comments";
@@ -14,7 +14,6 @@ const Spot = props => {
 
   window.openSpot = async id => {
     const response = await axios.get(`/api/spot/${id}`);
-    console.log(response);
     setVideos(response.data);
     setPhotos(response.data.photos);
     setComments(response.data.comments);
@@ -24,27 +23,30 @@ const Spot = props => {
 
   const close = () => {
     setShow(false);
+    setId(0);
   };
 
   return (
     <div className={show ? "spot-container move-left" : "spot-container move-right"}>
       <div className="spot">
-        <div className="close" onClick={close}>
-          ⓧ
-        </div>
-        <NavLink className="tab" activeClassName="active" to="/videos">
-          Videos
-        </NavLink>
-        <NavLink className="tab" activeClassName="active" to="/photos">
-          Photos
-        </NavLink>
-        <NavLink className="tab" activeClassName="active" to="/comments">
-          Comments
-        </NavLink>
-
-        <Route path="/videos" render={() => <Media videos={videos} />} />
-        <Route path="/photos" render={() => <Media photos={photos} />} />
-        <Route path="/comments" render={() => <Comments comments={comments} />} />
+        <nav>
+          <NavLink className="tab" activeClassName="active" to="/videos">
+            <i className="fas fa-video" />
+          </NavLink>
+          <NavLink className="tab" activeClassName="active" to="/photos">
+            <i className="far fa-images" />
+          </NavLink>
+          <NavLink className="tab" activeClassName="active" to="/comments">
+            <i className="fas fa-comments" />
+          </NavLink>
+          <Link className="tab" to="/" onClick={close}>
+            <i className="fas fa-window-close" />
+          </Link>
+        </nav>
+        <Route path="/videos" render={() => (!!id ? <Media videos={videos} /> : <Redirect push to="/" />)} />
+        <Route path="/photos" render={() => (!!id ? <Media photos={photos} /> : <Redirect push to="/" />)} />
+        <Route path="/comments" render={() => (!!id ? <Comments comments={comments} /> : <Redirect push to="/" />)} />
+        <Route exact path="/" render={() => !!id && <Redirect push to="/videos" />} />
       </div>
     </div>
   );

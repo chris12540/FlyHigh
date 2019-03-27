@@ -17,6 +17,8 @@ CREATE TABLE users (
     first_name VARCHAR NOT NULL,
     last_name VARCHAR NOT NULL,
     image VARCHAR NOT NULL
+    email VARCHAR NOT NULL
+    created_at TIMESTAMP DEFAULT NOW(),
 );
 
 CREATE TABLE videos (

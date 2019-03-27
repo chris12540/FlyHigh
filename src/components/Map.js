@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { loadScript } from "../utils";
 import { getLocation } from "../utils";
+import { placeMarkers } from "../utils";
 
 const Map = props => {
   const [spots, setSpots] = useState([]);
@@ -19,7 +20,7 @@ const Map = props => {
 
   const renderMap = () => {
     loadScript(
-      "https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_API + "&library=places&callback=initMap"
+      "https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_API + "&libraries=places&callback=initMap"
     );
     window.initMap = initMap;
   };
@@ -28,7 +29,9 @@ const Map = props => {
     axios
       .get("/api/spots")
       .then(response => {
-        setSpots(response.data);
+        if (spots.length !== response.data.length) {
+          setSpots(response.data);
+        }
       })
       .catch(error => {
         console.log("Problem getting spots: " + error);
@@ -47,9 +50,19 @@ const Map = props => {
     // Create An InfoWindow
     var infoWindow = new window.google.maps.InfoWindow();
 
-    getLocation(map, infoWindow);
+    // Create the search box and link it to the UI element.
+    var input = document.getElementById("pac-input");
+    var searchBox = new window.google.maps.places.SearchBox(input);
+    // map.controls[window.google.maps.ControlPosition.TOP_LEFT].push(input);
 
-    console.log(spots);
+    // // Bias the SearchBox results towards current map's viewport.
+    map.addListener("bounds_changed", function() {
+      searchBox.setBounds(map.getBounds());
+    });
+
+    searchBox.addListener("places_changed", placeMarkers(searchBox, map, infoWindow));
+
+    getLocation(map, infoWindow);
 
     // Display Dynamic Markers
     spots.forEach(spot => {
