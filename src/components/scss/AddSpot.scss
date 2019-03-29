@@ -31,7 +31,7 @@
   }
   .add-spot {
     > input {
-      transform: translateY(-150px);
+      transform: translateX(-400px);
       margin-right: 20px;
       padding: 10px;
       width: 220px;
@@ -39,6 +39,7 @@
       border: 1px solid gray;
       border-radius: 5px;
       font-size: 15px;
+      transition: transform 0.3s ease;
     }
     .move-down {
       transform: translate(0);

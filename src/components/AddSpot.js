@@ -26,7 +26,7 @@ const AddSpot = props => {
           value={search}
           type="text"
           className={show ? "move-down" : ""}
-          placeholder="Enter address or tap spot"
+          placeholder="Enter spot address"
           onChange={e => {
             setSearch(e.target.value);
           }}
