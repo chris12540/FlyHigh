@@ -27,7 +27,9 @@ const Spot = props => {
   };
 
   return (
-    <div className={show ? "spot-container move-left" : "spot-container move-right"}>
+    <div
+      style={{ height: window.innerHeight }}
+      className={show ? "spot-container move-left" : "spot-container move-right"}>
       <div className="spot">
         <nav>
           <NavLink className="tab" activeClassName="active" to="/videos">
