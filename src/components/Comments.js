@@ -1,4 +1,6 @@
 import React from "react";
+import Card from "@material-ui/core/Card";
+import { Typography } from "@material-ui/core";
 
 import "./scss/Comments.scss";
 
@@ -17,9 +19,9 @@ const Comments = props => {
           );
         })
       ) : (
-        <div className="no-comments">
-          <h1>No comments 〄</h1>
-        </div>
+        <Card style={{ margin: "15px 0", padding: "10px" }}>
+          <Typography variant="h4">No Comments 😭</Typography>
+        </Card>
       )}
     </div>
   );

@@ -1,15 +1,35 @@
 import React from "react";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+
 import "./scss/Media.scss";
+import { Typography } from "@material-ui/core";
 
 const Media = props => {
   let media = [];
   if (props.videos && props.videos.length) {
     media = props.videos.map(video => {
+      let time = video.created_at.split("T")[1].split(".");
+      let date = video.created_at.split("T")[0].split("-");
       return (
-        <div className="video" key={video.id}>
-          <img src={video.image} alt="" />
-          <h1>{video.title}</h1>
-          <h6>{video.created_at}</h6>
+        <Card className="video" key={video.id}>
+          <CardHeader
+            avatar={
+              <Avatar aria-label="Recipe">
+                <img src={video.image} alt="" />
+              </Avatar>
+            }
+            action={
+              <IconButton>
+                <MoreVertIcon />
+              </IconButton>
+            }
+            title={video.title}
+            subheader={`${date[1]}-${date[2]}-${date[0]}`}
+          />
           <div className="video-iframe">
             <iframe
               title={video.id}
@@ -21,25 +41,36 @@ const Media = props => {
               allowFullScreen
             />
           </div>
-        </div>
+        </Card>
       );
     });
   } else if (props.photos && props.photos.length) {
     media = props.photo.map(photo => {
       return (
-        <div className="photo">
-          <img src={photo.user.image} alt="" />
-          <h1>{photo.title}</h1>
-          <h6>{photo.date}</h6>
+        <Card className="photo" key={photo.id}>
+          <CardHeader
+            avatar={
+              <Avatar aria-label="Recipe">
+                <img src={photo.image} alt="" />
+              </Avatar>
+            }
+            action={
+              <IconButton>
+                <MoreVertIcon />
+              </IconButton>
+            }
+            title={photo.title}
+            subheader={photo.created_at}
+          />
           <img src={photo.url} alt="" />
-        </div>
+        </Card>
       );
     });
   } else {
     media = (
-      <div>
-        <h1>No Media 😭</h1>
-      </div>
+      <Card style={{ margin: "15px 0", padding: "10px" }}>
+        <Typography variant="h4">No Media 😭</Typography>
+      </Card>
     );
   }
   return <div className="media">{media}</div>;
